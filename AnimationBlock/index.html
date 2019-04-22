@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>-->
+<h1>THREE.js animation</h1>
 <script src="js/libs/three.min.js"></script>
 <script src="js/libs/TweenMax.min.js"></script>
 <script>
@@ -27,14 +27,38 @@
         camera.updateProjectionMatrix();
     });
 
-    // let geometry = new THREE.SphereGeometry(2,100,100),
-    let geometry = new THREE.BoxGeometry(1,1,1),
-        material  = new THREE.MeshLambertMaterial({color: 0xFFCC00}),
-        mesh = new THREE.Mesh(geometry,material);
-    scene.add(mesh);
 
-    let light= new THREE.PointLight(0xffffff, 1, 500);
-    light.position.set(10,0,25);
+    //This class is designed to assist with raycasting. Raycasting is used for mouse picking (working out what objects in the 3d space the mouse is over) amongst other things.
+    let raycater=new THREE.Raycaster(),
+        mouse = new THREE.Vector2();
+
+
+
+        let material  = new THREE.MeshLambertMaterial({color: 0xF7F7F7}),
+            geometry;
+    // scene.add(mesh);
+
+    let meshX=-10;
+    for (let i=0; i<15;i++){
+        if (i%2)geometry = new THREE.BoxGeometry(1,1,1);
+        else geometry = new THREE.ConeGeometry( .5, 1, 12 );
+
+        let mesh = new THREE.Mesh(geometry,material);
+        mesh.position.x=(Math.random()-0.5)*10;
+        mesh.position.y=(Math.random()-0.5)*10;
+        mesh.position.z=(Math.random()-0.5)*10;
+        scene.add(mesh);
+        meshX+=1;
+    }
+
+
+
+    let light= new THREE.PointLight(0xffffff, 1, 1000);
+    light.position.set(0,0,0);
+    scene.add(light);
+
+    light= new THREE.PointLight(0xffffff, 2, 1000);
+    light.position.set(0,0,25);
     scene.add(light);
 
     //save size fun
@@ -48,15 +72,25 @@
     };
     render();
 
-    this.tl = new TimelineMax({paused: true}).delay(.3);
-    this.tl.to(mesh.scale, 1, {x:2, ease: Expo.easeOut});
-    this.tl.to(mesh.scale, .5, {x:.5, ease: Expo.easeOut});
-    this.tl.to(mesh.position, .5, {x:2, ease: Expo.easeOut});
-    this.tl.to(mesh.rotation, .5, {y:Math.PI*.5, ease: Expo.easeOut}, "=-1.5");
+    function onMouseMove(event) {
+        //определяем касаемся ли мы какого-лиюо объекта на сцене
+        event.preventDefault();
+        mouse.x= (event.clientX/window.innerWidth)*2-1;
+        mouse.y=-(event.clientY/window.innerHeight)*2+1;
+        raycater.setFromCamera(mouse,camera);
+        let intersects = raycater.intersectObjects(scene.children, true);
+        for(let i=0; i< intersects.length;i++){
+            this.tl = new TimelineMax().delay(.3);
+            this.tl.to(intersects[i].object.scale, 1, {x:2, ease: Expo.easeOut});
+            this.tl.to(intersects[i].object.scale, .5, {x:.5, ease: Expo.easeOut});
+            this.tl.to(intersects[i].object.position, .5, {x:2, ease: Expo.easeOut});
+            this.tl.to(intersects[i].object.rotation, .5, {y:Math.PI*.5, ease: Expo.easeOut}, "=-1.5");
+        }
+    }
 
-    document.body.addEventListener('click', ()=>{
-        this.tl.play();
-    })
+
+
+    window.addEventListener('mousemove', onMouseMove);
 </script>
 </body>
 </html>
