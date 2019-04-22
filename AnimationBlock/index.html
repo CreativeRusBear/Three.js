@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>-->
+<script src="js/libs/three.min.js"></script>
+<script src="js/libs/TweenMax.min.js"></script>
+<script>
+    let scene= new THREE.Scene(),
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
+        renderer = new THREE.WebGLRenderer({antialias: true});
+    camera.position.z=5;
+    renderer.setClearColor("#e5e5e5");
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    window.addEventListener('resize', ()=>{
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect=window.innerWidth/window.innerHeight;
+        camera.updateProjectionMatrix();
+    });
+
+    let geometry = new THREE.SphereGeometry(2,100,100),
+        material  = new THREE.MeshLambertMaterial({color: 0xFFCC00}),
+        mesh = new THREE.Mesh(geometry,material);
+    scene.add(mesh);
+
+    let light= new THREE.PointLight(0xffffff, 1, 500);
+    light.position.set(0,14,25);
+    scene.add(light);
+    renderer.render(scene,camera);
+</script>
+</body>
+</html>
