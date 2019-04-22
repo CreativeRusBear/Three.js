@@ -36,7 +36,6 @@
 
         let material  = new THREE.MeshLambertMaterial({color: 0xF7F7F7}),
             geometry;
-    // scene.add(mesh);
 
     let meshX=-10;
     for (let i=0; i<15;i++){
@@ -64,10 +63,6 @@
     //save size fun
     let render=function (){
         requestAnimationFrame(render);
-        // mesh.rotation.x+=0.05;
-        // mesh.rotation.y+=0.01;
-        //
-        // mesh.scale.x-=-0.01;
         renderer.render(scene,camera);
     };
     render();
