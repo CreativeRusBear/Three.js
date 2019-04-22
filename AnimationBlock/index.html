@@ -27,15 +27,36 @@
         camera.updateProjectionMatrix();
     });
 
-    let geometry = new THREE.SphereGeometry(2,100,100),
+    // let geometry = new THREE.SphereGeometry(2,100,100),
+    let geometry = new THREE.BoxGeometry(1,1,1),
         material  = new THREE.MeshLambertMaterial({color: 0xFFCC00}),
         mesh = new THREE.Mesh(geometry,material);
     scene.add(mesh);
 
     let light= new THREE.PointLight(0xffffff, 1, 500);
-    light.position.set(0,14,25);
+    light.position.set(10,0,25);
     scene.add(light);
-    renderer.render(scene,camera);
+
+    //save size fun
+    let render=function (){
+        requestAnimationFrame(render);
+        // mesh.rotation.x+=0.05;
+        // mesh.rotation.y+=0.01;
+        //
+        // mesh.scale.x-=-0.01;
+        renderer.render(scene,camera);
+    };
+    render();
+
+    this.tl = new TimelineMax({paused: true}).delay(.3);
+    this.tl.to(mesh.scale, 1, {x:2, ease: Expo.easeOut});
+    this.tl.to(mesh.scale, .5, {x:.5, ease: Expo.easeOut});
+    this.tl.to(mesh.position, .5, {x:2, ease: Expo.easeOut});
+    this.tl.to(mesh.rotation, .5, {y:Math.PI*.5, ease: Expo.easeOut}, "=-1.5");
+
+    document.body.addEventListener('click', ()=>{
+        this.tl.play();
+    })
 </script>
 </body>
 </html>
