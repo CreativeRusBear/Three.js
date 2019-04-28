@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D Slider</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<section class="page">
+    <div class="options">
+        <div class="arrows">
+            <i class="fas fa-angle-up"></i>
+            <i class="fas fa-angle-down"></i>
+        </div>
+        <div class="color_scheme">
+
+        </div>
+    </div>
+</section>
+<script src="js/libs/three.min.js"></script>
+<script src="js/libs/OrbitControls.js"></script>
+<script src="js/libs/OBJLoader.js"></script>
+<script>
+    const scene = new THREE.Scene(),
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
+        renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
+    let loader=new THREE.TextureLoader();
+    loader.load('img/bg_prod.jpg' , (texture)=> scene.background = texture);
+
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    document.querySelector('.page').appendChild(renderer.domElement);
+
+    camera.position.set(5,2,1);
+    let keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1);
+    keyLight.position.set(-100, 0, 100);
+    let fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(7,100%,68%)'), 0.75);
+    fillLight.position.set(100, 0, 100);
+    let backLight = new THREE.DirectionalLight(0xffffff, 1);
+    backLight.position.set(100, 0, -100).normalize();
+    scene.add(keyLight);
+    scene.add(fillLight);
+    scene.add(backLight);
+
+    const objects=['banana.obj'],
+          allTextures=[['banana_standard_texture.png','banana_saturation_texture.png', 'banana_cold_texture.png']],
+          names=['banana'];
+    let currentObj=0;
+    loadMesh(currentObj);
+    function loadMesh(i) {
+        let textureObjLoader = new THREE.TextureLoader(),
+            map = textureObjLoader.load(`./models/${allTextures[i][0]}`),
+            material = new THREE.MeshPhongMaterial({map: map}),
+            objLoader = new THREE.OBJLoader();
+        objLoader.load(`./models/${objects[i]}`, function (obj) {
+            obj.traverse(function (node) {
+                if (node.isMesh) node.material = material;
+            });
+            obj.name = names[0];
+            scene.add(obj);
+        });
+        for (let item = 0; item < allTextures[i].length; item++) {
+            document.querySelector('.color_scheme').innerHTML += `<div class="color_scheme__block" style="background: url(img/div/${allTextures[i][item]});"></div>`;
+        }
+
+        let colorBlocks = document.querySelectorAll('.color_scheme__block');
+        for (item of colorBlocks) {
+            item.onclick = () => console.log(1);
+        }
+    }
+    function removeMesh(){
+
+    }
+
+
+    let controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping=true;
+    controls.campingFactor=0.25;
+    controls.enableZoom=true;
+
+    function render() {
+        renderer.render(scene,camera);
+        controls.update();
+        requestAnimationFrame(render);
+    }
+    render();
+
+    window.addEventListener('resize', ()=>{
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect=window.innerWidth/window.innerHeight;
+        camera.updateProjectionMatrix();
+    });
+</script>
+</body>
+</html>
