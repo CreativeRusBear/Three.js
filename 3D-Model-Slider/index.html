@@ -103,16 +103,11 @@
                 let value= val.style.background,
                     arr = value.split('/'),
                     result=arr[arr.length-1].slice(0,-2);
-                map = textureObjLoader.load(`./models/${result}`);
-                material = new THREE.MeshPhongMaterial({map: map});
-                material.needsUpdate = true;
-                var object = scene.getChildByName( names[i], true);
-                console.log(object);
-                // console.log(material);
-                // material = new THREE.MeshPhongMaterial({map: map});
-                // console.log(scene.getChildByName(names[i]));
-                // scene.getChildByName(names[i]).material=material;
-                console.log(scene.getChildByName(names[i]));
+                textureObjLoader.load(`./models/${result}`, function(texture){
+                    let mat = scene.getObjectByName( names[i], true).children[0].material;
+                    mat.map = texture;
+                    mat.needsUpdate = true;
+                });
             };
         });
     }
