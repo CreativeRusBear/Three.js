@@ -1,3 +1,9 @@
+:root{
+    --fifty-perc: 50%;
+    --fonts: "Century Gothic",Century,sans-serif;
+    --dark-color: #3f3c55;
+}
+
 body{
     margin: 0;
     height: 100vh;
@@ -8,15 +14,16 @@ canvas{
 
 h1{
     position: absolute;
-    left:50%;
-    top:50%;
-    margin-left:-25%;
+    left:var(--fifty-perc);
+    top:var(--fifty-perc);
+    margin-left:calc(var(--fifty-perc) / -2);
     padding: 15px;
     text-align: center;
-    border: 2px solid #000;
-    font-family: "Century Gothic",Century,sans-serif;
+    border: 2px solid var(--dark-color);
+    color: var(--dark-color);
+    font-family: var(--fonts);
     font-size: 18px;
     text-transform: uppercase;
-    width:50%;
+    width:var(--fifty-perc);
 
 }
