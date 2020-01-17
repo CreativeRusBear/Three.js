@@ -1,0 +1,34 @@
+{
+  "name": "three-js-projects",
+  "version": "1.0.0",
+  "description": "My projects, that created with using Three.js library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CreativeRusBear/Three.js.git"
+  },
+  "keywords": [
+    "Three.js",
+    "3D",
+    "Animation",
+    "WebGL"
+  ],
+  "author": "Artem Gusev <gusev2014russia@mail.ru> (CreativeRusBear)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CreativeRusBear/Three.js/issues"
+  },
+  "homepage": "https://github.com/CreativeRusBear/Three.js#readme",
+  "dependencies": {
+    "dat.gui": "^0.7.6",
+    "gsap": "^3.0.5",
+    "three": "^0.112.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "jsdoc": "^3.6.3"
+  }
+}
