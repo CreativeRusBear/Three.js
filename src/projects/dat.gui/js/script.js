@@ -1,8 +1,8 @@
-import "../../../libs/three.min.js";
-import "../../../libs/OrbitControls.js"
+import '../../../libs/three.min.js';
+import '../../../libs/OrbitControls.js';
 
-class Ball{
-	constructor(){
+class Ball {
+	constructor () {
 		this.canvas=document.getElementById('canvas');
 		this.canvas.setAttribute('width', window.innerWidth);
 		this.canvas.setAttribute('height', window.innerHeight);
@@ -13,30 +13,30 @@ class Ball{
 		this.light = new THREE.AmbientLight(0xffffff);
 
 		this.ball={
-			rotationX: 0,
-			rotationY: 0,
-			rotationZ: 0,
-			positionX: 0,
-			positionY: 0,
-			positionZ: 0
+			rotationX : 0,
+			rotationY : 0,
+			rotationZ : 0,
+			positionX : 0,
+			positionY : 0,
+			positionZ : 0,
 		};
 
 		this.gui = new dat.GUI();
 	}
 
-	settings(){
+	settings () {
 		this.datGuiSettings();
 		this.sceneSettings();
 		window.addEventListener('resize', this.windowResize.bind(this));
 	}
 
-	windowResize(){
+	windowResize () {
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.camera.aspect = window.innerWidth/window.innerHeight;
 		this.camera.updateProjectionMatrix();
 	}
 
-	datGuiSettings(){
+	datGuiSettings () {
 		this.gui.add(this.ball, 'rotationX').min(-0.2).max(0.2).step(0.001);
 		this.gui.add(this.ball, 'rotationY').min(-0.2).max(0.2).step(0.001);
 		this.gui.add(this.ball, 'rotationZ').min(-0.2).max(0.2).step(0.001);
@@ -45,29 +45,29 @@ class Ball{
 		this.gui.add(this.ball, 'positionZ').min(-5).max(52).step(0.1);
 	}
 
-	sceneSettings(){
+	sceneSettings () {
 		this.renderer.setClearColor(0x000000);
 		this.camera.position.set(100, 0, 1000);
 		this.scene.add(this.light);
 	}
 
-	createObj(){
+	createObj () {
 		const geometry = new THREE.SphereGeometry(200, 12, 12);
 
-		//vertexColors: THREE.FaceColors-св-во, которое разрешает для данного материала задать для каждой грани свой цвет
+		// VertexColors: THREE.FaceColors-св-во, которое разрешает для данного материала задать для каждой грани свой цвет
 		const material = new THREE.MeshBasicMaterial({color: 0xffffff, vertexColors: THREE.FaceColors});
 
-		//задаем цвета с помощью цикла
+		// Задаем цвета с помощью цикла
 		for (let i = 0; i < geometry.faces.length; i++) {
 
-			//грань
+			// Грань
 			geometry.faces[i].color.setRGB(Math.random(), Math.random(), Math.random());
 		}
 		this.mesh = new THREE.Mesh(geometry, material);
-		this.scene.add(this.mesh)
+		this.scene.add(this.mesh);
 	}
 
-	render() {
+	render () {
 		this.mesh.rotation.x+=this.ball.rotationX;
 		this.mesh.rotation.y+=this.ball.rotationY;
 		this.mesh.rotation.z+=this.ball.rotationZ;

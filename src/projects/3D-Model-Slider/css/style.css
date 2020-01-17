@@ -1,15 +1,8 @@
+@import "palette.css";
+
 body{
     margin: 0;
-    height: 100vh;
-}
-.page{
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-}
-canvas{
-    display: block;
-    z-index: 2;
+    overflow: hidden;
 }
 
 .options{
@@ -26,13 +19,13 @@ canvas{
 
 .fas{
     cursor: pointer;
-    color: #fff;
+    color: var(--white-color);
     display: block;
     font-size: 30px;
     transition: color .2s ease-in-out;
 }
 .fas:hover{
-    color: #4f4f4f;
+    color: var(--gray-color);
 }
 .color_scheme{
     position: relative;
@@ -48,10 +41,10 @@ canvas{
     margin-bottom: 10px;
     height: 30px;
     border-radius: 50%;
-    border: 3px solid #ffffff;
+    border: 3px solid var(--white-color);
     cursor: pointer;
     transition: border .2s ease-in-out;
 }
 .color_scheme__block:hover{
-    border: 3px solid #4f4f4f;
+    border: 3px solid var(--gray-color);
 }
